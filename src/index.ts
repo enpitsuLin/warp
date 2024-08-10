@@ -1,21 +1,21 @@
-import { getBooleanInput, getInput, setFailed } from '@actions/core'
-import { fetchTrace } from 'cdn-cgi-trace'
 import { execSync } from 'node:child_process'
 import { platform } from 'node:os'
-import { wait } from './wait'
+import { setTimeout } from 'node:timers/promises'
+import { getInput, setFailed } from '@actions/core'
+import { fetchTrace } from './trace'
 
 try {
   async function action() {
-    const onlyDoH = getBooleanInput('onlyDoH')
+    const mode = getInput('mode') ?? 'porxy'
     const familyMode = getInput('familyMode')
 
-    if (/^off|malware|full$/.test(familyMode) === false) {
+    if (/^off|malware|full$/.test(familyMode) === false)
       throw new Error('Bad option: familyMode')
-    }
 
-    if (platform() !== 'linux') {
+
+    if (platform() !== 'linux')
       throw new Error('This action is only available for Linux!')
-    }
+
 
     // add cloudflare gpg key
     console.log('Adding Cloudflare\'s GPG key...')
@@ -32,19 +32,18 @@ try {
     // setup warp
     console.log('Setting up WARP...')
     execSync('sudo warp-cli --accept-tos registration new')
-    execSync(`sudo warp-cli --accept-tos mode ${onlyDoH ? 'doh' : 'warp+doh'}`)
-    execSync(`sudo warp-cli --accept-tos dns families ${familyMode}`)
+    execSync(`sudo warp-cli --accept-tos mode ${mode}`)
     execSync('sudo warp-cli --accept-tos connect')
 
     // verify installation
     console.log('Verifying installation...')
-    await wait(1000)
+    await setTimeout(1000)
 
-    const trace = await fetchTrace('cloudflare.com')
+    const trace = fetchTrace()
 
-    if (trace.warp === 'off') {
+    if (trace.warp === 'off')
       throw new Error('WARP could NOT be enabled!')
-    }
+
 
     console.log('WARP was successfully enabled!')
   }

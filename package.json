@@ -6,8 +6,7 @@
     "check": "tsc"
   },
   "dependencies": {
-    "@actions/core": "^1.10.1",
-    "cdn-cgi-trace": "^1.1.0"
+    "@actions/core": "^1.10.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.4",
