@@ -18976,7 +18976,7 @@ var import_core = __toESM(require_core());
 // src/trace.ts
 var import_node_child_process = require("node:child_process");
 function fetchTrace(proxy) {
-  const command = `curl https://www.cloudflare.com/cdn-cgi/trace/${proxy ? `-x ${proxy}` : ""}`;
+  const command = `curl https://www.cloudflare.com/cdn-cgi/trace/${proxy ? ` -x ${proxy}` : ""}`;
   const text = (0, import_node_child_process.execSync)(command).toString();
   const lines = text.split("\n");
   const dataObject = {};
