@@ -1,17 +1,13 @@
-name: "boywithkeyboard/warp"
-description: "Setup WARP"
+name: boywithkeyboard/warp
+description: Setup WARP
 inputs:
-  onlyDoH:
-    description: "Use only DNS over HTTPS."
+  mode:
+    description: warp-cli mode.
     required: false
-    default: "false"
-  familyMode:
-    description: "Block malware and/or NSFW content."
-    required: false
-    default: "off"
+    default: proxy
 branding:
-  icon: "rss"
-  color: "gray-dark"
+  icon: rss
+  color: gray-dark
 runs:
-  using: "node20"
-  main: "build/index.js"
+  using: node20
+  main: build/index.js

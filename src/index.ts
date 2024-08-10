@@ -6,7 +6,7 @@ import { fetchTrace } from './trace'
 
 try {
   async function action() {
-    const mode = getInput('mode') ?? 'porxy'
+    const mode = getInput('mode')
     const familyMode = getInput('familyMode')
 
     if (/^off|malware|full$/.test(familyMode) === false)
