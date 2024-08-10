@@ -7,11 +7,6 @@ import { fetchTrace } from './trace'
 try {
   async function action() {
     const mode = getInput('mode')
-    const familyMode = getInput('familyMode')
-
-    if (/^off|malware|full$/.test(familyMode) === false)
-      throw new Error('Bad option: familyMode')
-
 
     if (platform() !== 'linux')
       throw new Error('This action is only available for Linux!')
@@ -39,11 +34,10 @@ try {
     console.log('Verifying installation...')
     await setTimeout(1000)
 
-    const trace = fetchTrace()
+    const trace = fetchTrace(mode === 'proxy' && "socks5::/127.0.0.1:40000")
 
     if (trace.warp === 'off')
       throw new Error('WARP could NOT be enabled!')
-
 
     console.log('WARP was successfully enabled!')
   }

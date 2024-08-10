@@ -1,8 +1,8 @@
 import { execSync } from 'node:child_process'
 
-export function fetchTrace() {
-  const url = `https://www.cloudflare.com/cdn-cgi/trace/`
-  const text = execSync(url).toString()
+export function fetchTrace(proxy?: string | false) {
+  const command = `curl https://www.cloudflare.com/cdn-cgi/trace/${proxy ? `-x ${proxy}` : ""}`
+  const text = execSync(command).toString()
   const lines = text.split('\n');
   const dataObject: Record<string, string> = {};
 
