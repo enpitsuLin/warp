@@ -19007,7 +19007,7 @@ try {
     (0, import_node_child_process2.execSync)("sudo warp-cli --accept-tos connect");
     console.log("Verifying installation...");
     await (0, import_promises.setTimeout)(1e3);
-    const trace = fetchTrace(mode === "proxy" && "socks5::/127.0.0.1:40000");
+    const trace = fetchTrace(mode === "proxy" && "socks5://127.0.0.1:40000");
     if (trace.warp === "off")
       throw new Error("WARP could NOT be enabled!");
     console.log("WARP was successfully enabled!");

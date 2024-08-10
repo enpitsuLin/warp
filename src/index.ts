@@ -34,7 +34,7 @@ try {
     console.log('Verifying installation...')
     await setTimeout(1000)
 
-    const trace = fetchTrace(mode === 'proxy' && "socks5::/127.0.0.1:40000")
+    const trace = fetchTrace(mode === 'proxy' && "socks5://127.0.0.1:40000")
 
     if (trace.warp === 'off')
       throw new Error('WARP could NOT be enabled!')
