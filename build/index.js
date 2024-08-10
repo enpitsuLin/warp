@@ -18975,9 +18975,9 @@ var import_core = __toESM(require_core());
 
 // src/trace.ts
 var import_node_child_process = require("node:child_process");
-function fetchTrace() {
-  const url = `https://www.cloudflare.com/cdn-cgi/trace/`;
-  const text = (0, import_node_child_process.execSync)(url).toString();
+function fetchTrace(proxy) {
+  const command = `curl https://www.cloudflare.com/cdn-cgi/trace/${proxy ? `-x ${proxy}` : ""}`;
+  const text = (0, import_node_child_process.execSync)(command).toString();
   const lines = text.split("\n");
   const dataObject = {};
   lines.forEach((line) => {
@@ -18992,10 +18992,7 @@ function fetchTrace() {
 // src/index.ts
 try {
   async function action() {
-    const mode = (0, import_core.getInput)("mode") ?? "porxy";
-    const familyMode = (0, import_core.getInput)("familyMode");
-    if (/^off|malware|full$/.test(familyMode) === false)
-      throw new Error("Bad option: familyMode");
+    const mode = (0, import_core.getInput)("mode");
     if ((0, import_node_os.platform)() !== "linux")
       throw new Error("This action is only available for Linux!");
     console.log("Adding Cloudflare's GPG key...");
@@ -19010,7 +19007,7 @@ try {
     (0, import_node_child_process2.execSync)("sudo warp-cli --accept-tos connect");
     console.log("Verifying installation...");
     await (0, import_promises.setTimeout)(1e3);
-    const trace = fetchTrace();
+    const trace = fetchTrace(mode === "proxy" && "socks5::/127.0.0.1:40000");
     if (trace.warp === "off")
       throw new Error("WARP could NOT be enabled!");
     console.log("WARP was successfully enabled!");
